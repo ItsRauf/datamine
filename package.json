@@ -1,0 +1,14 @@
+{
+  "name": "datamine",
+  "packageManager": "yarn@4.1.1",
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true,
+  "workspaces": ["packages/*"],
+  "devDependencies": {
+    "@biomejs/biome": "1.6.4",
+    "@datamine/config": "workspace:^",
+    "turbo": "^1.13.2"
+  }
+}
