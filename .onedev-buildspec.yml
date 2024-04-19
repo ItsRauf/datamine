@@ -27,7 +27,7 @@ jobs:
   - !BuildImageStep
     name: '[build]: dispatch'
     dockerfile: ./apps/dispatch/Dockerfile
-    tags: rose/datamine/dispatch:devel
+    tags: '@server@/rose/datamine/dispatch:devel'
     publish: true
     builtInRegistryAccessTokenSecret: DOCKER_REGISTRY_TOKEN
     removeDanglingImages: true
@@ -35,7 +35,7 @@ jobs:
   - !BuildImageStep
     name: '[build]: ingest'
     dockerfile: ./apps/ingest/Dockerfile
-    tags: rose/datamine/ingest:devel
+    tags: '@server@/rose/datamine/ingest:devel'
     publish: true
     builtInRegistryAccessTokenSecret: DOCKER_REGISTRY_TOKEN
     removeDanglingImages: true
@@ -43,7 +43,7 @@ jobs:
   - !BuildImageStep
     name: '[build]: bot'
     dockerfile: ./apps/bot/Dockerfile
-    tags: rose/datamine/bot:devel
+    tags: '@server@/rose/datamine/bot:devel'
     publish: true
     builtInRegistryAccessTokenSecret: DOCKER_REGISTRY_TOKEN
     removeDanglingImages: true
