@@ -29,6 +29,7 @@ jobs:
     dockerfile: ./apps/dispatch/Dockerfile
     tags: rose/datamine/dispatch:devel
     publish: true
+    builtInRegistryAccessTokenSecret: DOCKER_REGISTRY_TOKEN
     removeDanglingImages: true
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
   - !BuildImageStep
@@ -36,6 +37,7 @@ jobs:
     dockerfile: ./apps/ingest/Dockerfile
     tags: rose/datamine/ingest:devel
     publish: true
+    builtInRegistryAccessTokenSecret: DOCKER_REGISTRY_TOKEN
     removeDanglingImages: true
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
   - !BuildImageStep
@@ -43,6 +45,7 @@ jobs:
     dockerfile: ./apps/bot/Dockerfile
     tags: rose/datamine/bot:devel
     publish: true
+    builtInRegistryAccessTokenSecret: DOCKER_REGISTRY_TOKEN
     removeDanglingImages: true
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
   triggers:
