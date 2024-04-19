@@ -4,11 +4,23 @@
   "engines": {
     "node": ">=18"
   },
+  "type": "module",
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "devDependencies": {
     "@biomejs/biome": "1.6.4",
     "@datamine/config": "workspace:^",
     "turbo": "^1.13.2"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint"
+  },
+  "volta": {
+    "node": "20.12.2"
   }
 }

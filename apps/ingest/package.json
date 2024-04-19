@@ -1,0 +1,36 @@
+{
+  "name": "@datamine/ingest",
+  "packageManager": "yarn@4.1.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/main.js",
+  "module": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    "import": {
+      "types": "./dist/main.d.ts"
+    }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.6.4",
+    "@datamine/config": "workspace:*",
+    "@octokit/webhooks-types": "7.5.0",
+    "@types/node": "20.12.7",
+    "discord-api-types": "0.37.79",
+    "pkgroll": "2.0.2",
+    "tsx": "4.7.2",
+    "typescript": "5.4.5"
+  },
+  "scripts": {
+    "dev": "tsx ./src/main.ts",
+    "lint": "biome check ./src/**/*",
+    "build": "pkgroll"
+  },
+  "dependencies": {
+    "@datamine/database": "workspace:*",
+    "@datamine/dispatch": "workspace:*",
+    "@hono/node-server": "1.10.0",
+    "dotenv": "16.4.5",
+    "hono": "4.2.4"
+  }
+}

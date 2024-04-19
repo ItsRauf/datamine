@@ -1,0 +1,34 @@
+{
+  "name": "@datamine/database",
+  "packageManager": "yarn@4.1.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/main.js",
+  "module": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    "import": {
+      "types": "./dist/main.d.ts",
+      "default": "./dist/main.js"
+    }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.6.4",
+    "@datamine/config": "workspace:*",
+    "@types/node": "20.12.7",
+    "pkgroll": "2.0.2",
+    "tsx": "4.7.2",
+    "typescript": "5.4.5"
+  },
+  "scripts": {
+    "lint": "biome check ./src/**/*",
+    "build": "pkgroll",
+    "drizzle": "drizzle-kit generate:pg"
+  },
+  "dependencies": {
+    "@types/pg": "8.11.5",
+    "drizzle-kit": "0.20.14",
+    "drizzle-orm": "0.30.8",
+    "pg": "8.11.5"
+  }
+}

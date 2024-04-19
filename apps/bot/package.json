@@ -1,0 +1,34 @@
+{
+  "name": "@datamine/bot",
+  "packageManager": "yarn@4.1.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/main.js",
+  "module": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "exports": [
+    "./dist/commands/subscribe.js",
+    "./dist/commands/unsubscribe.js"
+  ],
+  "devDependencies": {
+    "@biomejs/biome": "1.7.0",
+    "@datamine/config": "workspace:*",
+    "@types/node": "20.12.7",
+    "discord-api-types": "0.37.79",
+    "pkgroll": "2.0.2",
+    "tsx": "4.7.2",
+    "typescript": "5.4.5"
+  },
+  "scripts": {
+    "dev": "tsx ./src/main.ts",
+    "lint": "biome check ./src/**/*",
+    "build": "pkgroll"
+  },
+  "dependencies": {
+    "@datamine/database": "workspace:*",
+    "@sapphire/framework": "5.1.0",
+    "discord.js": "14.x",
+    "dotenv": "16.4.5",
+    "drizzle-orm": "0.30.8"
+  }
+}

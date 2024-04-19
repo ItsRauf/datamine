@@ -13,6 +13,10 @@
 .pnp.*
 
 
-build/
+dist/
 node_modules
 .turbo
+.idea
+.env
+
+packages/database/migrations

@@ -1,0 +1,76 @@
+version: '3.7'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-datamine}
+      - POSTGRES_DB=${POSTGRES_DB:-datamine}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    restart: always
+    ports:
+      - 54320:5432
+    networks:
+      - datamine
+    healthcheck:
+       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+       interval: 5s
+       timeout: 5s
+       retries: 60
+  ingest:
+    container_name: ingest
+    build: 
+      context: .
+      dockerfile: ./apps/ingest/Dockerfile
+    restart: always
+    ports:
+      - 5000:5000
+    environment:
+      - GITHUB_WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET}
+      - GITHUB_REPOSITORY_NAME=${GITHUB_REPOSITORY_NAME}
+      - DISPATCH_URL=${DISPATCH_URL:-http://dispatch:5001/}
+    networks:
+      - datamine
+    depends_on:
+      - dispatch
+  dispatch:
+    container_name: dispatch
+    build: 
+      context: .
+      dockerfile: ./apps/dispatch/Dockerfile
+    restart: always
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${POSTGRES_DB:-datamine}
+      - DB_USER=${POSTGRES_USER:-datamine}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - datamine
+  bot:
+    container_name: bot
+    build: 
+      context: .
+      dockerfile: ./apps/bot/Dockerfile
+    restart: always
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${POSTGRES_DB:-datamine}
+      - DB_USER=${POSTGRES_USER:-datamine}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - datamine
+
+networks:
+  datamine:
+    name: datamine
