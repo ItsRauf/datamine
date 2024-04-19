@@ -1,0 +1,56 @@
+version: 31
+jobs:
+- name: Build
+  steps:
+  - !CheckoutStep
+    name: checkout
+    cloneCredential: !DefaultCredential {}
+    withLfs: false
+    withSubmodules: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !CommandStep
+    name: lint
+    runInContainer: true
+    image: node:21-alpine
+    interpreter: !DefaultInterpreter
+      commands: |
+        apk add --no-cache libc6-compat
+        apk update
+
+        yarn set version canary
+        yarn config set nodeLinker node-modules
+
+        yarn install
+        yarn run lint
+    useTTY: true
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !BuildImageStep
+    name: '[build]: dispatch'
+    dockerfile: ./apps/dispatch/Dockerfile
+    tags: rose/datamine/dispatch:devel
+    publish: true
+    removeDanglingImages: true
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !BuildImageStep
+    name: '[build]: ingest'
+    dockerfile: ./apps/ingest/Dockerfile
+    tags: rose/datamine/ingest:devel
+    publish: true
+    removeDanglingImages: true
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !BuildImageStep
+    name: '[build]: bot'
+    dockerfile: ./apps/bot/Dockerfile
+    tags: rose/datamine/bot:devel
+    publish: true
+    removeDanglingImages: true
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !BranchUpdateTrigger
+    branches: devel
+    paths: apps/** packages/**
+    projects: rose/datamine
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 3600
