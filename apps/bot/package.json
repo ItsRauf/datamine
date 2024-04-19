@@ -21,7 +21,7 @@
   },
   "scripts": {
     "dev": "tsx ./src/main.ts",
-    "lint": "biome check ./src/**/*",
+    "lint": "biome ci ./src/**/*",
     "build": "pkgroll"
   },
   "dependencies": {
