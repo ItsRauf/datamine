@@ -3,7 +3,12 @@ import "dotenv/config";
 import { database } from "@datamine/database";
 import { REST } from "@discordjs/rest";
 import { serve } from "@hono/node-server";
-import { Routes, type APIEmbed } from "discord-api-types/v10";
+import {
+  AllowedMentionsTypes,
+  Routes,
+  type APIEmbed,
+  type RESTPostAPIChannelMessageJSONBody,
+} from "discord-api-types/v10";
 import { Hono } from "hono";
 import { validator } from "hono/validator";
 
@@ -31,9 +36,24 @@ const dispatch = app
       const body = await c.req.valid("json");
       const servers = await database.query.servers.findMany();
       for (const server of servers) {
-        rest.post(Routes.channelMessages(`${BigInt(server.channel)}`), {
-          body: { embeds: [body] },
-        });
+        try {
+          await rest.post(
+            Routes.channelMessages(`${BigInt(server.channel)}`),
+            {
+              body: {
+                content: server.role
+                  ? `<@&${BigInt(server.role)}>`
+                  : "",
+                embeds: [body],
+                allowed_mentions: {
+                  parse: [AllowedMentionsTypes.Role],
+                },
+              } satisfies RESTPostAPIChannelMessageJSONBody,
+            },
+          );
+        } catch (error) {
+          console.error(error);
+        }
       }
       return c.text(`Fanning out to ${servers.length} servers.`);
     },
